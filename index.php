@@ -1,6 +1,7 @@
 <?php
 include "includes/db.php";
 include "includes/header.php";
+include "includes/modal.php";
 ?>
 
 
@@ -61,7 +62,7 @@ if (isset($_POST['produto_add'])) {
             <input class="w-100 form-control m-1" name="produto_nome" type="text"
                 placeholder="Digite o nome do produto">
             <p class=" m-1" style="color: rgb(4, 39, 105)">FABRICANTE</p>
-            <select class=" m-1  custom-select" for="produto_fabricante" name="produto_fabricante">
+            <select class="m-1 custom-select fab_select1" for="produto_fabricante" name="produto_fabricante">
 
                 <?php
 $query = "SELECT * FROM fabricante";
@@ -70,43 +71,25 @@ while ($row = mysqli_fetch_assoc($select_all_fabricante)) {
     $nome = $row['nome'];
     $id = $row['id'];
 
+    echo "<option class='fab_option' value='$id'>$nome</option>";
 
-    echo "<option value='$id'>$nome</option>";
+
 }
 ?>
-                </option>
+
             </select>
 
             <p class=" m-1" style="color: rgb(4, 39, 105)">CATEGORIA</p>
-            <select for="produto_categoria" class=" m-1 custom-select" name="produto_categoria">
-                <?php
+            <select for="produto_categoria" class=" m-1 custom-select " name="produto_categoria">
 
-$query = "SELECT * FROM fabricante";
-$select_all_categorias = mysqli_query($connection, $query);
-while ($row = mysqli_fetch_assoc($select_all_categorias)) {
-    $cat_1 = $row['categoria_1'];
-    $cat_2 = $row['categoria_2'];
-    $cat_3 = $row['categoria_3'];
-    $nome = $row['nome'];
+                <option class="fab_cat_option"></option>
+                <option class="fab_cat_option"></option>
+                <option class="fab_cat_option"></option>
 
-?>
-
-
-                <option value="<?php echo $cat_1; ?>">
-
-                    <?php echo "{$nome}: $cat_1"; ?>
-                </option>
-                <option value="<?php echo $cat_2; ?>">
-                    <?php echo "{$nome}: $cat_2"; ?>
-                </option>
-                <option value="<?php echo $cat_3; ?>">
-                    <?php echo "{$nome}: $cat_3"; ?>
-                </option>
-                <?php
-}?>
-                ?>
 
             </select>
+
+
             <p class="" style="color: rgb(4, 39, 105)">PREÇO</p>
             <input class="w-100 form-control" name="produto_preco" type="text" placeholder="Digite o preço">
             <button class="btn mt-2" style="background-color: rgb(4, 39, 105); color:white" name="produto_add"
@@ -168,7 +151,9 @@ while ($row = mysqli_fetch_assoc($select_all_produto_query)) {
                     <?php echo $preco; ?>
                 </td>
                 <td>
-                    <button class="btn" style="background-color: rgb(4, 39, 105); color:white">Editar Equipes</button>
+                    <button class="btn edit_button" rel="<?php echo $id; ?>"
+                        style="background-color: rgb(4, 39, 105); color:white">Editar
+                        Equipes</button>
 
                 </td>
                 <td>
@@ -200,18 +185,33 @@ if (isset($_GET['delete'])) {
 }
 ?>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
 <script src="./DataTables/jQuery-3.6.0/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="DataTables/datatables.min.js"></script>
 
-
 <script>
-    setInterval($(document).ready(function () {
+    $(document).ready(function () {
         $('#content_Table').DataTable(
             { "width": "100%" }
         );
-    }), 10000);
 
+        $(".edit_button").on('click', function () {
+            var id = $(this).attr("rel");
+            var update_url = "http://localhost/proj_loja/controller/updateProd.php?update=" + id + "";
+            $(".modal_update_link").attr("href", update_url);
+            $("#myModal").modal('show');
+
+        });
+
+    })
 
 </script>
+
+<script src="./assets/main.js"></script>
 <?php include "includes/footer.php"; ?>
