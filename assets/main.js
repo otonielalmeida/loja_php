@@ -5,6 +5,11 @@ const fab_select_1 = document.querySelector(".fab_select1");
 const update_btn = document.querySelector("#update_btn");
 
 const input_nome = document.querySelector("#input_nome");
+const input_fab = document.querySelector("#input_fab");
+const input_cat = document.querySelector("#input_cat");
+const input_preco = document.querySelector("#input_preco");
+const input_id = document.querySelector("#prod_id");
+
 fab_select.addEventListener("click", function (e) {
   fetch(
     `http://localhost/proj_loja/controller/getProd_cat.php?id=${fab_select.value}`,
@@ -25,6 +30,24 @@ fab_select_1.addEventListener("click", function (e) {
   )
     .then((response) => response.json())
     .then((data) => loadOptions(data));
+});
+
+update_btn.addEventListener("click", function (e) {
+ 
+  fetch(`http://localhost/proj_loja/controller/updateProd.php`, {
+    method: "POST",
+    dataType: "json",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(
+      { 
+        
+        id : input_id.value,
+        produto_nome: input_nome.value,
+        fab_id : input_fab.value,
+        fab_cat : input_cat.value,
+        preco : input_preco.value
+     }),
+  });
 });
 
 function loadOptions(data) {
