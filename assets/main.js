@@ -21,6 +21,17 @@ fab_select.addEventListener("click", function (e) {
     .then((data) => loadOptions(data));
 });
 
+window.onload = function () {
+  fetch(
+    `http://localhost/proj_loja/controller/getProd_cat.php?id=${fab_select.value}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => loadOptions(data));
+};
+
 fab_select_1.addEventListener("click", function (e) {
   fetch(
     `http://localhost/proj_loja/controller/getProd_cat.php?id=${fab_select_1.value}`,
@@ -33,20 +44,17 @@ fab_select_1.addEventListener("click", function (e) {
 });
 
 update_btn.addEventListener("click", function (e) {
- 
   fetch(`http://localhost/proj_loja/controller/updateProd.php`, {
     method: "POST",
     dataType: "json",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(
-      { 
-        
-        id : input_id.value,
-        produto_nome: input_nome.value,
-        fab_id : input_fab.value,
-        fab_cat : input_cat.value,
-        preco : input_preco.value
-     }),
+    body: JSON.stringify({
+      id: input_id.value,
+      produto_nome: input_nome.value,
+      fab_id: input_fab.value,
+      fab_cat: input_cat.value,
+      preco: input_preco.value,
+    }),
   });
 });
 

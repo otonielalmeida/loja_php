@@ -26,5 +26,3 @@ if (isset($_POST['produto_nome'])) {
     $statement = $connection->prepare($sql);
     $statement->execute();
 }
-?>
-
